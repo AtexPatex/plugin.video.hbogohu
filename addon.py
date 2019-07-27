@@ -457,6 +457,7 @@ def listing(url):
 
             else:
                 list_add_series(item)
+    xbmcplugin.setContent(int(sys.argv[1]), "movies")
 
 
 def season_add_season(item):
@@ -482,6 +483,7 @@ def season(url):
     items = jsonrsp.get("Parent", {}).get("ChildContents", {}).get("Items")
     for item in items:
         season_add_season(item)
+    xbmcplugin.setContent(int(sys.argv[1]), "tvshows")
 
 
 def episode_add_episode(item):
@@ -540,6 +542,7 @@ def episode(url):
     items = jsonrsp.get("ChildContents", {}).get("Items")
     for item in items:
         episode_add_episode(item)
+    xbmcplugin.setContent(int(sys.argv[1]), "episodes")
 
 
 def play(url):
@@ -818,10 +821,12 @@ def search():
                 search_add_series(item)
                 # Ако е сериал
             br = br + 1
-        if br == 0:
+        if not br:
             add_directory(
                 "Nincs találat", "", "", "", media_path + "DefaultFolderBack.png"
             )
+        else:
+            xbmcplugin.setContent(int(sys.argv[1]), "movies")
 
 
 def add_link(
