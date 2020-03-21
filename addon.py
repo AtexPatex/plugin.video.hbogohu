@@ -283,7 +283,7 @@ def categories():
             # if the item has no URL we shouldn't display it
             continue
         add_directory(
-            item.get("Name", "Ismeretlen kategória").encode("utf-8", "ignore"),
+            safe_encode(item.get("Name", "Ismeretlen kategória")),
             item.get("ObjectUrl").replace(
                 "/0/{sort}/{pageIndex}/{pageSize}/0/0", "/0/0/1/1024/0/0"
             ),
@@ -295,11 +295,11 @@ def categories():
 
 def list_add_movie_link(item):
     # if it's a movie: # add_link(ou, plot, ar, imdb, bu, cast, director, writer, duration, genre, name, on, py, mode)
-    plot = item["Abstract"].encode("utf-8", "ignore")
+    plot = safe_encode(item["Abstract"])
 
     if item.get("AvailabilityTo"):
         plot += " A film megtekinthető: %s" % (
-            item["AvailabilityTo"].encode("utf-8", "ignore")
+            safe_encode(item["AvailabilityTo"])
         )
 
     object_url = item["ObjectUrl"]
@@ -311,7 +311,7 @@ def list_add_movie_link(item):
     writer = item["Writer"]
     duration = item["Duration"]
     genre = item["Genre"]
-    name = item["Name"].encode("utf-8", "ignore")
+    name = safe_encode(item["Name"])
     original_name = item["OriginalName"]
     production_year = item["ProductionYear"]
 
@@ -336,10 +336,10 @@ def list_add_movie_link(item):
 
 def list_add_series_episode(item):
     # If it's a series episode: # add_link(ou, plot, ar, imdb, bu, cast, director, writer, duration, genre, name, on, py, mode)
-    plot = item["Abstract"].encode("utf-8", "ignore")
+    plot = safe_encode(item["Abstract"])
     if item.get("AvailabilityTo"):
         plot += " Az epizód megtekinthető: %s" % (
-            item["AvailabilityTo"].encode("utf-8", "ignore")
+            safe_encode(item["AvailabilityTo"])
         )
 
     object_url = item["ObjectUrl"]
@@ -379,17 +379,24 @@ def list_add_series_episode(item):
 
 def list_add_series(item):
     # If it's a series
-    name = item["Name"].encode("utf-8", "ignore")
+    name = safe_encode(item["Name"])
     object_url = item["ObjectUrl"]
-    abstract = item["Abstract"].encode("utf-8", "ignore")
+    abstract = safe_encode(item["Abstract"])
     mode = 2
     background_url = item["BackgroundUrl"]
     add_directory(name, object_url, abstract, mode, background_url)
 
 
+def safe_encode(str):
+    if not (str is None):
+        str.encode("utf-8", "ignore")
+    else:
+        str
+
+
 def list_add_subcategory(item):
     add_directory(
-        item["Name"].encode("utf-8", "ignore"),
+        safe_encode(item["Name"]),
         item["ObjectUrl"],
         "",
         1,
@@ -436,9 +443,9 @@ def season_add_season(item):
     if not item.get("ObjectUrl"):
         return
     add_directory(
-        item["Name"].encode("utf-8", "ignore"),
+        safe_encode(item["Name"]),
         item["ObjectUrl"],
-        item["Abstract"].encode("utf-8", "ignore"),
+        safe_encode(item["Abstract"]),
         3,
         item["BackgroundUrl"],
     )
@@ -461,10 +468,10 @@ def episode_add_episode(item):
     if not item.get("ObjectUrl"):
         return
     # add_link(ou, plot, ar, imdb, bu, cast, director, writer, duration, genre, name, on, py, mode)
-    plot = item["Abstract"].encode("utf-8", "ignore")
+    plot = safe_encode(item["Abstract"])
     if item.get("AvailabilityTo"):
         plot += " Az epizód megtekinthető: %s" % (
-            item["AvailabilityTo"].encode("utf-8", "ignore")
+            safe_encode(item["AvailabilityTo"])
         )
 
     object_url = item["ObjectUrl"]
@@ -668,7 +675,7 @@ def search_add_movie(item):
     if not item.get("ObjectUrl"):
         return
     object_url = item["ObjectUrl"]
-    plot = item["Abstract"].encode("utf-8", "ignore")
+    plot = safe_encode(item["Abstract"])
     age_rating = item["AgeRating"]
     imdb = item["ImdbRate"]
     background_url = item["BackgroundUrl"]
@@ -677,7 +684,7 @@ def search_add_movie(item):
     writer = item["Writer"]
     duration = item["Duration"]
     genre = item["Genre"]
-    name = item["Name"].encode("utf-8", "ignore")
+    name = safe_encode(item["Name"])
     original_name = item["OriginalName"]
     production_year = item["ProductionYear"]
 
@@ -703,7 +710,7 @@ def search_add_series_episode(item):
     if not item.get("ObjectUrl"):
         return
     object_url = item["ObjectUrl"]
-    plot = item["Abstract"].encode("utf-8", "ignore")
+    plot = safe_encode(item["Abstract"])
     age_rating = item["AgeRating"]
     imdb = item["ImdbRate"]
     background_url = item["BackgroundUrl"]
@@ -740,9 +747,9 @@ def search_add_series_episode(item):
 def search_add_series(item):
     if not item.get("ObjectUrl"):
         return
-    name = item["Name"].encode("utf-8", "ignore")
+    name = safe_encode(item["Name"])
     object_url = item["ObjectUrl"]
-    plot = item["Abstract"].encode("utf-8", "ignore")
+    plot = safe_encode(item["Abstract"])
     background_url = item["BackgroundUrl"]
     add_directory(name, object_url, plot, 2, background_url)
 
