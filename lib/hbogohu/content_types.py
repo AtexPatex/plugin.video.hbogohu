@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 CONTENT_TYPE_MOVIE = 1
 CONTENT_TYPE_SERIES = 2
