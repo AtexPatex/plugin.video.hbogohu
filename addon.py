@@ -389,9 +389,9 @@ def list_add_series(item):
 
 def safe_encode(str):
     if not (str is None):
-        str.encode("utf-8", "ignore")
+        return str.encode("utf-8", "ignore")
     else:
-        str
+        return str
 
 
 def list_add_subcategory(item):
