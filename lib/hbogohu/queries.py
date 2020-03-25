@@ -213,7 +213,7 @@ class QueryManager:
             settings.store(LAST_SEARCH, search_text)
 
             response = requests_wrapper.get(
-                "https://huapi.hbogo.eu/v5/Search/Json/HUN/COMP/%s/0"
+                "https://huapi.hbogo.eu/v8/Search/json/HUN/COMP/%s/0/0/0/0/0/3"
                 % (search_text.encode("utf-8")),
                 session.get_authenticated_headers()
             )
